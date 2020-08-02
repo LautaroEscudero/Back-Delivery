@@ -17,6 +17,7 @@ public interface InsumoRepository extends JpaRepository<ArticuloInsumo, Serializ
 
 	public abstract Page<ArticuloInsumo> findAll(Pageable pageable);
 	public abstract Page<ArticuloInsumo> findByFechaBaja(Date fecha, Pageable pageable);
+	public abstract Page<ArticuloInsumo> findByFechaBajaAndDenominacionContaining(Date fecha, String buscado, Pageable pageable);
 	public abstract List<ArticuloInsumo> findByFechaBaja(Date fecha);
 	
 }

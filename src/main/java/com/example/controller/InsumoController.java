@@ -62,5 +62,15 @@ public class InsumoController {
        
         return new ResponseEntity<Page<ArticuloInsumo>>(insumos, HttpStatus.OK);
     }
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping("/pagess")
+	public ResponseEntity<Page<ArticuloInsumo>> insumoB(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "null") String buscado) {
+		Page<ArticuloInsumo> insumos = insumoService.paginasB(buscado, PageRequest.of(page, size));
+		return new ResponseEntity<Page<ArticuloInsumo>>(insumos, HttpStatus.OK);
+	}
 
 }

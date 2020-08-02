@@ -54,6 +54,14 @@ public class InsumoService {
 		return insumoRepositorio.findByFechaBaja(null, pageable);
 	}
 
+	public Page<ArticuloInsumo> paginasB(String buscado, Pageable pageable) {
+		if (buscado == null) {
+			return insumoRepositorio.findByFechaBaja(null, pageable);
+		} else {
+			return insumoRepositorio.findByFechaBajaAndDenominacionContaining(null, buscado, pageable);
+		}
+	}
+
 	public List<ArticuloInsumo> insumoSinStock() {
 		List<ArticuloInsumo> sinStock = new ArrayList<ArticuloInsumo>();
 		for (ArticuloInsumo ai : this.getInsumosF()) {
