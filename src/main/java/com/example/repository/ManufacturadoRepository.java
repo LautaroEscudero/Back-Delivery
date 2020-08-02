@@ -19,7 +19,11 @@ public interface ManufacturadoRepository extends JpaRepository<ArticuloManufactu
 
 	public abstract Page<ArticuloManufacturado> findByFechaBaja(Date fecha, Pageable pageable);
 	
+	public abstract Page<ArticuloManufacturado> findByFechaBajaAndDenominacionContaining(Date fecha, String buscado, Pageable pageable);
+	
 	public abstract Page<ArticuloManufacturado> findByFechaBajaAndRubro(Date fecha,RubroGeneral rubro, Pageable pageable);
+	
+	public abstract Page<ArticuloManufacturado> findByFechaBajaAndRubroAndDenominacionContaining(Date fecha,RubroGeneral rubro, String buscado, Pageable pageable);
 	
 	public abstract ArticuloManufacturado findByDenominacion(String denominacion);
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,7 +43,7 @@ public class InsumoController {
 		return insumoService.getInsumos();
 
 	}
-	
+
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/sinstock")
 	public List<ArticuloInsumo> getInsumoSinStock() {
@@ -50,26 +51,41 @@ public class InsumoController {
 		return insumoService.insumoSinStock();
 
 	}
-	
-	
+
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/pages")
-    public ResponseEntity<Page<ArticuloInsumo>> paginas(
-    		 @RequestParam(defaultValue = "0") int page,
-             @RequestParam(defaultValue = "4") int size
-             ){
-        Page<ArticuloInsumo> insumos = insumoService.paginas(PageRequest.of(page, size));
-       
-        return new ResponseEntity<Page<ArticuloInsumo>>(insumos, HttpStatus.OK);
-    }
-	
-	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/pagess")
-	public ResponseEntity<Page<ArticuloInsumo>> insumoB(
+	public ResponseEntity<Page<ArticuloInsumo>> paginas(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "id") String order,
+			@RequestParam(defaultValue = "true") boolean asc) {
+
+		Page<ArticuloInsumo> insumos = null;
+
+		if (asc) {
+			insumos = insumoService.paginas(PageRequest.of(page, size, Sort.by(order)));
+		} else {
+			insumos = insumoService.paginas(PageRequest.of(page, size, Sort.by(order).descending()));
+		}
+		return new ResponseEntity<Page<ArticuloInsumo>>(insumos, HttpStatus.OK);
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping("/pagess")
+	public ResponseEntity<Page<ArticuloInsumo>> insumoB(@
+			RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "id") String order,
+			@RequestParam(defaultValue = "true") boolean asc,
 			@RequestParam(defaultValue = "null") String buscado) {
-		Page<ArticuloInsumo> insumos = insumoService.paginasB(buscado, PageRequest.of(page, size));
+		
+		Page<ArticuloInsumo> insumos = null;
+		if(asc) {
+			 insumos = insumoService.paginasB(buscado, PageRequest.of(page, size, Sort.by(order)));
+		}else {
+			 insumos = insumoService.paginasB(buscado, PageRequest.of(page, size, Sort.by(order).descending()));
+		}
+		//Page<ArticuloInsumo>
 		return new ResponseEntity<Page<ArticuloInsumo>>(insumos, HttpStatus.OK);
 	}
 

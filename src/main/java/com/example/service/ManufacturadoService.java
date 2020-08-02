@@ -84,9 +84,20 @@ public class ManufacturadoService {
 		return manufacturadoRepositorio.findByFechaBaja(null, pageable);
 	}
     
+    public Page<ArticuloManufacturado> paginasB(String buscado, Pageable pageable) {
+		return manufacturadoRepositorio.findByFechaBajaAndDenominacionContaining(null, buscado, pageable);
+	}
+    
+    
     public Page<ArticuloManufacturado> paginass(int id,Pageable pageable) {
     	RubroGeneral rubro = rubroRepositorio.findById(id);
     	
 		return manufacturadoRepositorio.findByFechaBajaAndRubro(null,rubro, pageable);
+	}
+    
+    public Page<ArticuloManufacturado> paginassB(int id, String buscado, Pageable pageable) {
+    	RubroGeneral rubro = rubroRepositorio.findById(id);
+    	
+		return manufacturadoRepositorio.findByFechaBajaAndRubroAndDenominacionContaining(null, rubro, buscado, pageable);
 	}
 }

@@ -113,4 +113,24 @@ public class ManufacturadoController {
 		}
 		return new ResponseEntity<Page<ArticuloManufacturado>>(insumos, HttpStatus.OK);
 	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping("/pagesss")
+	public ResponseEntity<Page<ArticuloManufacturado>> paginassB(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "0") int rubro,
+			@RequestParam(defaultValue = "null") String termino) {
+		
+		Page<ArticuloManufacturado> insumos;
+		
+		if (rubro == 0 && termino == null ) {
+			insumos = manufacturadoService.paginas(PageRequest.of(page, size));
+		} else if(rubro == 0 && termino != null) {
+			insumos = manufacturadoService.paginasB(termino, PageRequest.of(page, size));
+		}else {
+			insumos = manufacturadoService.paginassB(rubro, termino, PageRequest.of(page, size));
+		}
+		return new ResponseEntity<Page<ArticuloManufacturado>>(insumos, HttpStatus.OK);
+	}
 }
