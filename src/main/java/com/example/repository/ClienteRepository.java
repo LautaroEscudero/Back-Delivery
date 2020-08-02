@@ -20,7 +20,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Serializable>{
 	
 	//@Query(value = "SELECT * FROM cliente WHERE correo = ?1", nativeQuery = true)
 	 // Cliente findByCorre(String correo);
-	
 	public abstract Page<Cliente> findAll(Pageable pageable);
+	
+	public abstract Page<Cliente> findByRol(Rol rol, Pageable pageable);
 	
 }

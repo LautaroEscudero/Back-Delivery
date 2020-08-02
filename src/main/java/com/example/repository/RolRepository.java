@@ -9,5 +9,7 @@ import com.example.entitie.Rol;
 
 @Repository("rolrepositorio")
 public interface RolRepository extends JpaRepository<Rol, Serializable>{
+	
+	public abstract Rol findById(int id);
 
 }

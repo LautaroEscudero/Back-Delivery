@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.entitie.Cliente;
 import com.example.entitie.Rol;
 import com.example.repository.ClienteRepository;
+import com.example.repository.RolRepository;
 
 @Service("servicio")
 public class ClienteService {
@@ -20,6 +21,10 @@ public class ClienteService {
 	@Autowired
 	@Qualifier("repositorio")
 	private ClienteRepository repository;
+	
+	@Autowired
+	@Qualifier("rolrepositorio")
+	private RolRepository rolRepo;
 	
 	private static final Log logger = LogFactory.getLog(ClienteService.class);
 
@@ -91,5 +96,14 @@ public class ClienteService {
 	public Page<Cliente> paginas(Pageable pageable) {
 		return repository.findAll(pageable);
 	}
+	
+	public Page<Cliente> paginasR(int rol, Pageable pageable) {
+		if(rol == 0) {
+			return repository.findAll(pageable);
+			
+		}else {
+		Rol r = rolRepo.findById(rol);
+		return repository.findByRol(r, pageable);
+	}}
 	
 }

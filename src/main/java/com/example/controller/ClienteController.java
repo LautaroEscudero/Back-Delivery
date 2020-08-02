@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,6 +80,27 @@ public class ClienteController {
         Page<Cliente> clientes = service.paginas(PageRequest.of(page, size));
        
         return new ResponseEntity<Page<Cliente>>(clientes, HttpStatus.OK);
+    }
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping("/pagess")
+    public ResponseEntity<Page<Cliente>> paginasR(
+    		 @RequestParam(defaultValue = "0") int page,
+             @RequestParam(defaultValue = "4") int size,
+             @RequestParam(defaultValue = "null") String order,
+             @RequestParam(defaultValue = "true") boolean asc,
+             @RequestParam(defaultValue = "0") int rol
+             ){
+		
+        Page<Cliente> usuarios = null;
+        
+        if(asc) {
+        	usuarios = service.paginasR(rol, PageRequest.of(page, size, Sort.by(order)));
+        }else {
+        	usuarios = service.paginasR(rol, PageRequest.of(page, size, Sort.by(order).descending()));
+        }
+       
+        return new ResponseEntity<Page<Cliente>>(usuarios, HttpStatus.OK);
     }
 
 	}
