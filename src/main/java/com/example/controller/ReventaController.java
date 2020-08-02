@@ -132,6 +132,19 @@ public class ReventaController {
 	}
 	
 	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping("/pagesss")
+	public ResponseEntity<Page<ArticuloReventa>> paginasB(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "null") String termino) {
+		
+		Page<ArticuloReventa> insumos = reventaService.paginasB(termino, PageRequest.of(page, size));
+
+		return new ResponseEntity<Page<ArticuloReventa>>(insumos, HttpStatus.OK);
+	}
+	
+	
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/listarr")
 	public List<ArticuloReventa> getReventaa(@RequestParam(defaultValue = "0") int rubro) {
 

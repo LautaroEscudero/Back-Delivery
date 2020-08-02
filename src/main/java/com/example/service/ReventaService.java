@@ -125,6 +125,14 @@ public class ReventaService {
 	public Page<ArticuloReventa> paginas(Pageable pageable) {
 		return reventaRepositorio.findByFechaBaja(null, pageable);
 	}
+	
+	public Page<ArticuloReventa> paginasB(String buscado, Pageable pageable) {
+		if(buscado == null) {
+		return reventaRepositorio.findByFechaBaja(null, pageable);
+		}else {
+			return reventaRepositorio.findByFechaBajaAndDenominacionContaining(null, buscado, pageable);
+		}
+	}
 
 	public Page<ArticuloReventa> paginass(int id, Pageable pageable) {
 		RubroArticulo rubro = rubroRepositorio.findById(id);

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -112,9 +113,19 @@ public class PedidoController {
 
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/pages")
-	public ResponseEntity<Page<Pedido>> paginas(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "4") int size, @RequestParam(defaultValue = "1") int estado) {
-		Page<Pedido> pedidos = pedidoServ.paginas(estado, PageRequest.of(page, size));
+	public ResponseEntity<Page<Pedido>> paginas(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "true") boolean asc,
+			@RequestParam(defaultValue = "1") int estado) {
+		
+		Page<Pedido> pedidos = null;
+		if(asc) {
+			pedidos = pedidoServ.paginas(estado, PageRequest.of(page, size, Sort.by("fecha").ascending()));
+		}else {
+			pedidos = pedidoServ.paginas(estado, PageRequest.of(page, size, Sort.by("fecha").descending()));
+		}
+		 
 
 		return new ResponseEntity<Page<Pedido>>(pedidos, HttpStatus.OK);
 	}

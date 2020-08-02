@@ -18,9 +18,9 @@ public interface ReventaRepository extends JpaRepository<ArticuloReventa, Serial
 
 	public abstract Page<ArticuloReventa> findAll(Pageable pageable);
 	public abstract Page<ArticuloReventa> findByFechaBaja(Date fecha, Pageable pageable);
+	public abstract Page<ArticuloReventa> findByFechaBajaAndDenominacionContaining(Date fecha, String buscado, Pageable pageable);
 	public abstract List<ArticuloReventa> findByFechaBaja(Date fecha);
 	public abstract Page<ArticuloReventa> findByFechaBajaAndRubroArticulo(Date fecha,RubroArticulo rubro, Pageable pageable);
 	public abstract List<ArticuloReventa> findByFechaBajaAndRubroArticulo(Date fecha,RubroArticulo rubro);
-	
 	
 }
