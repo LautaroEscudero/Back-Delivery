@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -104,32 +105,59 @@ public class ManufacturadoController {
 	public ResponseEntity<Page<ArticuloManufacturado>> paginass(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "id") String order,
+			@RequestParam(defaultValue = "true") boolean asc,
 			@RequestParam(defaultValue = "0") int rubro) {
 		Page<ArticuloManufacturado> insumos;
 		if (rubro == 0) {
-			insumos = manufacturadoService.paginas(PageRequest.of(page, size));
+			if(asc) {
+				insumos = manufacturadoService.paginas(PageRequest.of(page, size, Sort.by(order)));
+			}else {
+				insumos = manufacturadoService.paginas(PageRequest.of(page, size, Sort.by(order).descending()));
+			}
+			
 		} else {
-			insumos = manufacturadoService.paginass(rubro, PageRequest.of(page, size));
+			if(asc) {
+				insumos = manufacturadoService.paginass(rubro, PageRequest.of(page, size, Sort.by(order)));
+			}else {
+				insumos = manufacturadoService.paginass(rubro, PageRequest.of(page, size, Sort.by(order).descending()));}
+			
 		}
 		return new ResponseEntity<Page<ArticuloManufacturado>>(insumos, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/pagesss")
 	public ResponseEntity<Page<ArticuloManufacturado>> paginassB(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "id") String order,
+			@RequestParam(defaultValue = "true") boolean asc,
 			@RequestParam(defaultValue = "0") int rubro,
 			@RequestParam(defaultValue = "null") String termino) {
-		
+
 		Page<ArticuloManufacturado> insumos;
-		
-		if (rubro == 0 && termino == null ) {
-			insumos = manufacturadoService.paginas(PageRequest.of(page, size));
-		} else if(rubro == 0 && termino != null) {
-			insumos = manufacturadoService.paginasB(termino, PageRequest.of(page, size));
-		}else {
-			insumos = manufacturadoService.paginassB(rubro, termino, PageRequest.of(page, size));
+
+		if (rubro == 0 && termino == null) {
+			if (asc) {
+				insumos = manufacturadoService.paginas(PageRequest.of(page, size, Sort.by(order)));
+			} else {
+				insumos = manufacturadoService.paginas(PageRequest.of(page, size, Sort.by(order).descending()));
+			}
+		} else if (rubro == 0 && termino != null) {
+			if (asc) {
+				insumos = manufacturadoService.paginasB(termino, PageRequest.of(page, size, Sort.by(order)));
+			} else {
+				insumos = manufacturadoService.paginasB(termino,
+						PageRequest.of(page, size, Sort.by(order).descending()));
+			}
+		} else {
+			if (asc) {
+				insumos = manufacturadoService.paginassB(rubro, termino, PageRequest.of(page, size, Sort.by(order)));
+			} else {
+				insumos = manufacturadoService.paginassB(rubro, termino,
+						PageRequest.of(page, size, Sort.by(order).descending()));
+			}
 		}
 		return new ResponseEntity<Page<ArticuloManufacturado>>(insumos, HttpStatus.OK);
 	}

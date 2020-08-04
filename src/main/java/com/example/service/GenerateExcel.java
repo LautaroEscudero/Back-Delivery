@@ -46,9 +46,9 @@ public class GenerateExcel {
 
 			Row headerRowTres = sheet.createRow(2);
 			headerRowTres.createCell(0).setCellValue("Desde");
-			headerRowTres.createCell(1).setCellValue(desde);
+			headerRowTres.createCell(1).setCellValue(formatoFecha(desde));
 			headerRowTres.createCell(3).setCellValue("Hasta");
-			headerRowTres.createCell(4).setCellValue(hasta);
+			headerRowTres.createCell(4).setCellValue(formatoFecha(hasta));
 
 			// Row for Header
 			Row headerRow = sheet.createRow(4);
@@ -144,8 +144,12 @@ public class GenerateExcel {
 				row.createCell(1).setCellValue(insumo.getDenominacion());
 				
 				row.createCell(2).setCellValue(insumo.getStockMinimo());
+				
+				row.createCell(3).setCellValue(insumo.getUnidadMedida().getDenominacion());
 
-				row.createCell(3).setCellValue(insumo.getStockActual());
+				row.createCell(4).setCellValue(insumo.getStockActual());
+				
+				row.createCell(5).setCellValue(insumo.getUnidadMedida().getDenominacion());
 			}
 			
 			Row headerRowDos = sheet.createRow(rowIdx++ +1);
@@ -201,9 +205,9 @@ public class GenerateExcel {
 
 			Row headerRowTres = sheet.createRow(1);
 			headerRowTres.createCell(0).setCellValue("Desde");
-			headerRowTres.createCell(1).setCellValue(desde);
+			headerRowTres.createCell(1).setCellValue(formatoFecha(desde));
 			headerRowTres.createCell(3).setCellValue("Hasta");
-			headerRowTres.createCell(4).setCellValue(hasta);
+			headerRowTres.createCell(4).setCellValue(formatoFecha(hasta));
 
 			// Row for Header
 			Row headerRow = sheet.createRow(4);
@@ -262,9 +266,9 @@ public class GenerateExcel {
 
 			Row headerRowTres = sheet.createRow(2);
 			headerRowTres.createCell(0).setCellValue("Desde");
-			headerRowTres.createCell(1).setCellValue(desde);
+			headerRowTres.createCell(1).setCellValue(formatoFecha(desde));
 			headerRowTres.createCell(3).setCellValue("Hasta");
-			headerRowTres.createCell(4).setCellValue(hasta);
+			headerRowTres.createCell(4).setCellValue(formatoFecha(hasta));
 
 			// Row for Header
 			Row headerRow = sheet.createRow(4);
@@ -300,6 +304,18 @@ public class GenerateExcel {
 		}
 		
 		return total;
+	}
+	
+	public static String formatoFecha(String fecha) {
+		 String[] parts =fecha.split("-");
+		 String devuelve = "";
+		 for(int i = parts.length-1;i>=0;i--) {
+			 devuelve += parts[i].trim();
+			 if(i != 0 ) {
+				 devuelve += "/";
+			 }
+		 }
+		return devuelve;
 	}
 
 }

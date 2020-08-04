@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,7 @@ public class ReventaController {
 		}
 
 		try {
-			return reventaService.saveFile(file, denominacion, precio_venta, precio_compra, actual, minimo, medida, id_rubro,
+			return reventaService.saveFile(file, denominacion, precio_venta, precio_compra, minimo, actual, medida, id_rubro,
 					u_alta);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -109,9 +110,19 @@ public class ReventaController {
 
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/pages")
-	public ResponseEntity<Page<ArticuloReventa>> paginas(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "4") int size) {
-		Page<ArticuloReventa> insumos = reventaService.paginas(PageRequest.of(page, size));
+	public ResponseEntity<Page<ArticuloReventa>> paginas(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "id") String order,
+            @RequestParam(defaultValue = "true") boolean asc) {
+		
+		Page<ArticuloReventa> insumos = null;
+		if(asc) {
+			insumos = reventaService.paginas(PageRequest.of(page, size, Sort.by(order)));
+		}else {
+			insumos = reventaService.paginas(PageRequest.of(page, size, Sort.by(order).descending()));
+		}
+		
 
 		return new ResponseEntity<Page<ArticuloReventa>>(insumos, HttpStatus.OK);
 	}
@@ -136,10 +147,16 @@ public class ReventaController {
 	public ResponseEntity<Page<ArticuloReventa>> paginasB(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "id") String order,
+            @RequestParam(defaultValue = "true") boolean asc,
 			@RequestParam(defaultValue = "null") String termino) {
+		Page<ArticuloReventa> insumos = null;
+		if(asc) {
+			insumos = reventaService.paginasB(termino, PageRequest.of(page, size, Sort.by(order)));
+		}else {
+		    insumos = reventaService.paginasB(termino, PageRequest.of(page, size, Sort.by(order).descending()));
+		}
 		
-		Page<ArticuloReventa> insumos = reventaService.paginasB(termino, PageRequest.of(page, size));
-
 		return new ResponseEntity<Page<ArticuloReventa>>(insumos, HttpStatus.OK);
 	}
 	
